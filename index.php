@@ -1,19 +1,20 @@
-	<?php 
+<?php 
 
 require_once("vendor/autoload.php");
 
-$app = new \Slim\Slim();
+use \Slim\Slim;
+use \Hcode\Page;
+
+$app = new Slim();
 
 $app->config('debug', true);
 
-$app->get('/', function() {
+$app->get('/', function() {      //Quando chamarem o site da pasta raiz...
     
-	//echo "OK";
-	$sql = new Hcode\DB\Sql();
-	$results = $sql->select("SELECT * FROM tb_users");
+	$page = new Page();  //Chama o construct e adiciona o header
 
-	echo json_encode($results);
-
+	$page->setTpl("index");  // Carrge o conteúdo 
+	//O destrutor vai mostrar o footer
 });
 
 $app->run();
