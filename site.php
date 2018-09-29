@@ -17,32 +17,50 @@ $app->get('/', function() {      //Quando chamarem o site da pasta raiz(loja)...
 	//O destrutor vai mostrar o footer
 });
 
-//Página de Categorias
-$app->get('/categories/:idcategory', function ($idcategory) use ($app) {
-    //Verifica se há uma pagina no GET, se não houver, começa na primeira
-    $pageNum = (isset($_GET['page'])) ? (int)$_GET['page'] : 1;
+$app->get("/categories/:idcategory", function($idcategory) {
 
-    //Instancia e inicializa os produtos por pagina
-    $category = new Category();
-    $category->get((int)$idcategory);
+	$page = (isset($_GET['page'])) ? (int)$_GET['page'] : 1;
 
-    //Calcula e Divide o numero de produtos por pagina
-    $pagination = $category->getProductsPage($pageNum);
+	$category = new Category();
 
-    //Inicializa um array de Pages Vazio
-    $pages = [];
-    for($i = 1; $i <= $pagination['pages']; $i++) {
-        array_push($pages, [
-            'link' => '/categories/'.$category->getidcategory().'?page='.$i,
-            'page' => $i
-        ]);
-    }
-    $page = new Page();
-    $page->setTpl("category" , array(
-            "category" => $category->getValues(),
-            "products" => $pagination['data'],
-            "pages"    => $pages)
-    );
+	$category->get((int)$idcategory);
+
+	$pagination = $category->getProductsPage($page);
+
+	$pages = [];
+
+	for ($i=1; $i <= $pagination['pages']; $i++) { 
+		array_push($pages, [
+			'link'=>'/categories/'.$category->getidcategory().'?page='.$i,
+			'page'=>$i
+		]);
+	}
+
+	$page = new Page();	
+
+	$page->setTpl("category", array(
+		"category"=>$category->getValues(),
+		"products"=>$pagination["data"],
+		'pages'=>$pages
+	));
+
 });
+
+$app->get("/products/:desurl", function($desurl){
+
+	$product = new Product();
+
+	$product->getFromURL($desurl);
+
+	$page = new Page();
+
+	$page->setTpl("product-detail", [
+		'product'=>$product->getValues(),
+		'categories'=>$product->getCategories()
+	]);
+
+});
+
+
 
 ?>
