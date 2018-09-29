@@ -11,6 +11,55 @@ class User extends Model {
 	const SESSION = "User";
 	const SECRET = "HcodePhp7_Secret";
 
+	public static function getFromSession()
+	{
+
+		$user = new User();
+		// Se tem sessao e está logado.
+		if (isset($_SESSION[User::SESSION]) && (int)$_SESSION[User::SESSION]['iduser'] > 0) {
+
+			$user->setData($_SESSION[User::SESSION]);
+		}
+
+		return $user;
+	}
+
+
+	public static function checkLogin($inadmin = true)
+	{
+
+		if (
+			!isset($_SESSION[User::SESSION])    // se nao existir a sessão ou...
+			||
+			!$_SESSION[User::SESSION]           // se for falsa(vazia) ou...
+			||
+			!(int)$_SESSION[User::SESSION]["iduser"] > 0   // se não for maior que 0 (invalida na conversao int)
+		) {
+			// Atendido algo acima, quer dizer que não está logado, logo
+			return false;
+
+		} else {
+			// Está logado, mas vamos ver se é um acesso para rota de admin ou usuário normal.
+
+			if ($inadmin === true && (bool)$_SESSION[User::SESSION]['inadmin'] === true ) {    // admin 
+
+				return true;
+
+			} else if ($inadmin === false) {   //normal
+
+				return true;
+
+			} else {
+
+				return false;
+
+			}
+
+
+		}
+	}
+
+
 	public static function login($login, $password) 
 	{
 
@@ -48,15 +97,7 @@ class User extends Model {
 	public static function verifyLogin($inadmin = true)
 	{
 
-		if (
-			!isset($_SESSION[User::SESSION])    // se a sessão nao existir ou...
-			||
-			!$_SESSION[User::SESSION]           // se for falsa(vazia) ou...
-			||
-			!(int)$_SESSION[User::SESSION]["iduser"] > 0   // se não for maior que 0 (invalida na conversao int)
-			||
-			(bool)$_SESSION[User::SESSION]["inadmin"] !== $inadmin  // se pode acessar a admin.
-		) {
+		if (User::checkLogin($inadmin)) {
 			// se tudo algum acima ... 
 			header("Location: /admin/login");
 			exit;   // para naofazer mais nada
