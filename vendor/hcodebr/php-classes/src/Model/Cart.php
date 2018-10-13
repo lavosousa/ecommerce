@@ -214,7 +214,7 @@ class Cart extends Model {
 	public function setFreight($nrzipcode) 
 	{
 
-		$zipcode = str_replace('-','',$nrzipcode);
+		$nrzipcode = str_replace('-','',$nrzipcode);
 
 		$totals = $this->getProductsTotals();
 
@@ -280,7 +280,7 @@ class Cart extends Model {
 
 	}
 
-	public static function setMsgError()
+	public static function setMsgError($msg)
 	{
 
 		$_SESSION[Cart::SESSION_ERROR] = $msg;
