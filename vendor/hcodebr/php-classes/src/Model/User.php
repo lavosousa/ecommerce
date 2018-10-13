@@ -264,7 +264,7 @@ class User extends Model {
 
 	public static function validForgotDecrypt($result)
  	{
- 		  echo "aqui está o codigo passado na url: " . $result . "<br/>";
+ 		//  echo "aqui está o codigo passado na url: " . $result . "<br/>";
 		$result = base64_decode($result);
 		$code = mb_substr($result, openssl_cipher_iv_length('aes-256-cbc'), null, '8bit');
 		$iv = mb_substr($result, 0, openssl_cipher_iv_length('aes-256-cbc'), '8bit');

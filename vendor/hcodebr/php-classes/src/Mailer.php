@@ -7,9 +7,9 @@ use PHPMailer;
 
 class Mailer{
 
-	const USERNAME = "";
-	const PASSWORD = "";
-	const NAME_FROM = "";
+	const USERNAME = "email@gmail.com";
+	const PASSWORD = "senha";
+	const NAME_FROM = "nnome";
 
 	private $mail;
 
@@ -95,6 +95,10 @@ class Mailer{
 
 		//Attach an image file
 		//$this->mail->addAttachment('images/phpmailer_mini.png');
+
+		// Gravar em arquivos
+		$file = fopen("email-em-arquivo.html", "w+");
+		fwrite($file, $html);
 	
 	} // End function __constuct
 
