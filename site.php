@@ -310,7 +310,66 @@ $app->post('/forgot/reset', function() {
 
 });
 
+$app->get("/profile", function (){
 
+	User::verifyLogin(false);
+
+	$user = User::getFromSession();
+
+	$page = new Page();
+
+	$page->setTpl("profile", [
+		'user'=>$user->getValues(),
+		'profileMsg'=>User::getSucess(),
+		'profileError'=>User::getError()
+	]);
+
+});
+
+$app->post("/profile", function (){
+
+	User::verifyLogin(false);
+
+	if (!isset($_POST['desperson']) || $_POST['desperson'] === '') {
+		User::setError("Preencha seu nome.");
+		header('Location: /profile');
+		exit;
+	}
+
+	if (!isset($_POST['desemail']) || $_POST['desemail'] === '') {
+		User::setError("Preencha o seu e-mail.");
+		header('Location: /profile');
+		exit;
+	}
+
+	$user = User::getFromSession();   // pra pegar o email atual
+
+	if ($_POST['desemail'] !== $user->getdesemail()) {   // p/ ver se mudou email.
+
+		if (User::checkLoginExists($_POST['desemail']) === true ) {
+
+			User::setError("Este endereço de email já esta cadastrado.");
+			header('Location: /profile');
+			exit;
+
+		}
+	}
+
+	// Sobrecarrgar o $_POST para que o inadmin/senha não seja sobrescritos pelo que vem do post.
+	$_POST['inadmin']  = $user->getinadmin();
+	$_POST['despassword'] = $user->getdespassword();
+	$_POST['deslogin'] = $_POST['desemail'];   // já seta o login como o e-mail.
+
+	$user->setData($_POST);	
+    //var_dump($user()); exit;
+	$user->save();
+
+	User::setSucess('Dados alterados com sucesso!');
+
+	header("Location: /profile");	
+	exit;
+
+});
 
 
 ?>

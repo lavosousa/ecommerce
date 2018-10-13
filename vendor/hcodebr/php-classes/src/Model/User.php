@@ -12,6 +12,7 @@ class User extends Model {
 	const SECRET = "HcodePhp7_Secret";
 	const ERROR = "UserError";
 	const ERROR_REGISTER = "UserErrorRegister";
+	const SUCESS = "UserSucess";
 
 	public static function getFromSession()
 	{
@@ -97,7 +98,7 @@ class User extends Model {
 			return $user;
 
 		} else {
-			throw new \Exception("Usuário inexistente ou senha inválida.", 1);			
+			throw new \Exception("senha inválida.", 1);			
 		}
 
 	}
@@ -142,6 +143,7 @@ class User extends Model {
 			":desperson"=>utf8_decode($this->getdesperson()),
 			":deslogin"=>$this->getdeslogin(),
 			":despassword"=>User::getPasswordHash($this->getdespassword()), 
+			//":despassword"=>$this->getdespassword(), 
 			":desemail"=>$this->getdesemail(),
 			":nrphone"=>$this->getnrphone(),
 			":inadmin"=>$this->getinadmin()
@@ -175,7 +177,8 @@ class User extends Model {
 			":iduser"=>$this->getiduser(),
 			":desperson"=>utf8_decode($this->getdesperson()),
 			":deslogin"=>$this->getdeslogin(),
-			":despassword"=>User::getPasswordHash($this->getdespassword()), 
+			":despassword"=>User::getPasswordHash($this->getdespassword()), 			
+			//":despassword"=>$this->getdespassword(), 
 			":desemail"=>$this->getdesemail(),
 			":nrphone"=>$this->getnrphone(),
 			":inadmin"=>$this->getinadmin()
@@ -388,6 +391,31 @@ class User extends Model {
 		return password_hash($password, PASSWORD_DEFAULT, [
 			'cost' => 12
 		]);
+
+	}
+
+	public static function setSucess($msg)
+	{
+
+		$_SESSION[User::SUCESS] = $msg;
+
+	}
+
+	public static function getSucess()
+	{
+
+		$msg = (isset($_SESSION[User::SUCESS]) && $_SESSION[User::SUCESS]) ? $_SESSION[User::SUCESS] : '';
+
+		User::clearSucess();
+
+		return $msg;
+
+	}
+
+	public static function clearSucess()
+	{
+
+		$_SESSION[User::SUCESS] = NULL;
 
 	}
 

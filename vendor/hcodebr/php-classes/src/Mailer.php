@@ -96,8 +96,11 @@ class Mailer{
 		//Attach an image file
 		//$this->mail->addAttachment('images/phpmailer_mini.png');
 
-		// Gravar em arquivos
-		$file = fopen("email-em-arquivo.html", "w+");
+		// Gravar em arquivos uma vez que o gmail está bloqueando.
+		//$dt = new DateTime();
+        //$dt = $data->format('d-m-Y H-i-s');
+
+		$file = fopen("emails-em-arquivos/recupera-senha-".date('Y-m-d_His').".html", "w");
 		fwrite($file, $html);
 	
 	} // End function __constuct
