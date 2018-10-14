@@ -1,4 +1,5 @@
 <?php 
+
 session_start();   // inicia o uso de sessão
 require_once("vendor/autoload.php");
 
