@@ -7,16 +7,42 @@ $app->get('/admin/users', function() {    // rota pagina admin / usuários
 
 	User::verifyLogin();    // ja valida se está logado e se é admin
 
-	$users = User::listAll();  // traz array com todos usuários
+	$search = (isset($_GET['search'])) ? $_GET['search'] : "";
+	$page = (isset($_GET['page'])) ? (int)$_GET['page'] : 1;
+
+	if ($search != '') {     // tem pesquisa
+
+		$pagination = User::getPageSearch($search, $page); 
+
+
+	} else {                // Não tem pesquisa
+
+		$pagination = User::getPage($page); 
+
+	}	
+
+	$pages = []; 
+
+	for ($x = 0; $x < $pagination['pages'] ; $x++) 
+	{ 
+
+		array_push($pages, [
+			'href' => '/admin/users?'.http_build_query([
+				'page' => $x+1,
+				'search' => $search
+			]),
+			'text'=>$x+1
+		]);
+	}
     
 	$page = new PageAdmin();  // carrega pagina padrão com header e footer (normal) 
 
 	$page->setTpl("users", array (
-		"users"=>$users
+		"users"=>$pagination['data'],
+		"search"=>$search,
+		"pages"=>$pages
 	));
 
-	$page->setTpl("users");  
-	
 });
 
 $app->get('/admin/users/create', function() {   
