@@ -173,7 +173,7 @@ class Product extends Model {
 
 	}
 
-		public static function getPage($page = 1, $itemsPerPage = 10)   // nao usa this dentro, entaõ pode ser static
+	public static function getPage($page = 1, $itemsPerPage = 10)   // nao usa this dentro, entaõ pode ser static
 	{
         $start = ($page - 1) * $itemsPerPage;
 
