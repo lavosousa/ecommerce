@@ -247,17 +247,17 @@ $app->post("/checkout", function(){
 
 	$order->save();
 
-	//switch ((int)$_POST['payment-method']) 
-	//{
+	switch ((int)$_POST['payment-method']) 
+	{
 
-	//	case 1:
+		case 1:
 		header("Location: /order/".$order->getidorder()."/pagseguro");
-	//	break;
-	//	case 2:
-	//	header("Location: /order/".$order->getidorder()."/paypal");
-	//	break;
+		break;
+		case 2:
+		header("Location: /order/".$order->getidorder()."/paypal");
+		break;
 
-	//}
+	}
 	exit;
 });
 

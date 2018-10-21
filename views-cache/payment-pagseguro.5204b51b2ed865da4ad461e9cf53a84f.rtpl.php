@@ -1,7 +1,7 @@
 <?php if(!class_exists('Rain\Tpl')){exit;}?><form method="post" action="https://pagseguro.uol.com.br/v2/checkout/payment.html">  
           
         <!-- Campos obrigatórios -->  
-        <input name="receiverEmail" type="hidden" value="lavo.sousa@gmail.com">  
+        <input name="receiverEmail" type="hidden" value="gabrielaarend@yahoo.com.br">     <!-- identifica o cliente no pagseguro -->
         <input name="currency" type="hidden" value="BRL">  
         
         <?php $counter1=-1;  if( isset($products) && ( is_array($products) || $products instanceof Traversable ) && sizeof($products) ) foreach( $products as $key1 => $value1 ){ $counter1++; ?> 
@@ -12,11 +12,13 @@
         <input name="itemWeight<?php echo htmlspecialchars( $counter1+1, ENT_COMPAT, 'UTF-8', FALSE ); ?>" type="hidden" value="<?php echo htmlspecialchars( $value1["vlweight"]*1000, ENT_COMPAT, 'UTF-8', FALSE ); ?>">  
         <?php } ?>
 
+        <!-- Faltou programar o val do frete
         <input name="itemId3" type="hidden" value="3">  
         <input name="itemDescription3" type="hidden" value="Frete">  
         <input name="itemAmount3" type="hidden" value="100.00">  
         <input name="itemQuantity3" type="hidden" value="1">  
         <input name="itemWeight3" type="hidden" value="0">          
+        -->
 
         <input name="reference" type="hidden" value="<?php echo htmlspecialchars( $order["idorder"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">  
           
@@ -37,7 +39,8 @@
         <input name="senderPhone" type="hidden" value="<?php echo htmlspecialchars( $phone["number"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">  
         <input name="senderEmail" type="hidden" value="<?php echo htmlspecialchars( $order["desemail"], ENT_COMPAT, 'UTF-8', FALSE ); ?>">  
           
-</form>  
+</form>  </form>  <!-- No script abaixo pega o unico formulario que tem na tela e manda -->
+
 <script type="text/javascript">
 document.forms[0].submit();
 </script>

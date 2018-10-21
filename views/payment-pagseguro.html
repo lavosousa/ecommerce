@@ -1,7 +1,7 @@
 <form method="post" action="https://pagseguro.uol.com.br/v2/checkout/payment.html">  
           
         <!-- Campos obrigatórios -->  
-        <input name="receiverEmail" type="hidden" value="lavo.sousa@gmail.com">  
+        <input name="receiverEmail" type="hidden" value="gabrielaarend@yahoo.com.br">     <!-- identifica o cliente no pagseguro -->
         <input name="currency" type="hidden" value="BRL">  
         
         {loop="$products"} 
@@ -39,7 +39,8 @@
         <input name="senderPhone" type="hidden" value="{$phone.number}">  
         <input name="senderEmail" type="hidden" value="{$order.desemail}">  
           
-</form>  
+</form>  </form>  <!-- No script abaixo pega o unico formulario que tem na tela e manda -->
+
 <script type="text/javascript">
 document.forms[0].submit();
 </script>
